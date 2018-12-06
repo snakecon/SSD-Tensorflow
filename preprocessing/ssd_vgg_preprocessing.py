@@ -316,7 +316,6 @@ def preprocess_for_eval(image, labels, bboxes,
             raise ValueError('Input must be of size [height, width, C>0]')
 
         image = tf.to_float(image)
-        image = tf_image_whitened(image, [_R_MEAN, _G_MEAN, _B_MEAN])
 
         # Add image rectangle to bboxes.
         bbox_img = tf.constant([[0., 0., 1., 1.]])
@@ -352,7 +351,7 @@ def preprocess_for_eval(image, labels, bboxes,
             image = tf_image.resize_image(image, out_shape,
                                           method=tf.image.ResizeMethod.BILINEAR,
                                           align_corners=False)
-
+        image = tf_image_whitened(image, [_R_MEAN, _G_MEAN, _B_MEAN])
         # Split back bounding boxes.
         bbox_img = bboxes[0]
         bboxes = bboxes[1:]

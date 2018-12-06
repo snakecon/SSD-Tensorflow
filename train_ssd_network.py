@@ -40,7 +40,7 @@ tf.app.flags.DEFINE_float(
 # General Flags.
 # =========================================================================== #
 tf.app.flags.DEFINE_string(
-    'train_dir', '/tmp/tfmodel/',
+    'train_dir', './tfmodel/',
     'Directory where checkpoints and event logs are written to.')
 tf.app.flags.DEFINE_integer('num_clones', 1,
                             'Number of model clones to deploy.')
@@ -57,10 +57,10 @@ tf.app.flags.DEFINE_integer(
     'log_every_n_steps', 10,
     'The frequency with which logs are print.')
 tf.app.flags.DEFINE_integer(
-    'save_summaries_secs', 600,
+    'save_summaries_secs', 3,
     'The frequency with which summaries are saved, in seconds.')
 tf.app.flags.DEFINE_integer(
-    'save_interval_secs', 600,
+    'save_interval_secs', 60,
     'The frequency with which the model is saved, in seconds.')
 tf.app.flags.DEFINE_float(
     'gpu_memory_fraction', 0.8, 'GPU memory fraction to use.')
@@ -130,13 +130,13 @@ tf.app.flags.DEFINE_float(
 # Dataset Flags.
 # =========================================================================== #
 tf.app.flags.DEFINE_string(
-    'dataset_name', 'imagenet', 'The name of the dataset to load.')
+    'dataset_name', 'pascalvoc_2007', 'The name of the dataset to load.')
 tf.app.flags.DEFINE_integer(
     'num_classes', 21, 'Number of classes to use in the dataset.')
 tf.app.flags.DEFINE_string(
     'dataset_split_name', 'train', 'The name of the train/test split.')
 tf.app.flags.DEFINE_string(
-    'dataset_dir', None, 'The directory where the dataset files are stored.')
+    'dataset_dir', "./tfrecords", 'The directory where the dataset files are stored.')
 tf.app.flags.DEFINE_integer(
     'labels_offset', 0,
     'An offset for the labels in the dataset. This flag is primarily used to '
@@ -158,7 +158,7 @@ tf.app.flags.DEFINE_integer('max_number_of_steps', None,
 # Fine-Tuning Flags.
 # =========================================================================== #
 tf.app.flags.DEFINE_string(
-    'checkpoint_path', None,
+    'checkpoint_path', './checkpoints/ssd_300_vgg.ckpt',
     'The path to a checkpoint from which to fine-tune.')
 tf.app.flags.DEFINE_string(
     'checkpoint_model_scope', None,
@@ -382,6 +382,7 @@ def main(_):
             save_summaries_secs=FLAGS.save_summaries_secs,
             saver=saver,
             save_interval_secs=FLAGS.save_interval_secs,
+            trace_every_n_steps=2,
             session_config=config,
             sync_optimizer=None)
 
